@@ -92,7 +92,7 @@ class AirCargoProblem(Problem):
                             load = Action(expr("Fly({}, {}, {})".format(fr, c, p)),
                                             [precond_pos, precond_neg],
                                             [effect_add, effect_rem])
-                            unloads.append(fly)
+                            unloads.append(load)
 
             return unloads
 
