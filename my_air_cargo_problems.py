@@ -65,8 +65,21 @@ class AirCargoProblem(Problem):
                 effect_add: not At(C1, SFO) and In(C1, P1)
                 )
             
-            return loads
+            
             """
+            for c in self.cargos:
+                for p in self.planes:
+                    if c != p:
+                        for to in self.airports:
+                            precond_pos = [expr("At({}, {})".format(to, c)),]
+                            precond_neg = []
+                            effect_add = [expr("At({}, {})".format(to, p))]
+                            effect_rem = [expr("Fly({}, {})".format(to, c, p))]
+                            unload = Action(expr("Fly({}, {}, {})".format(to, c, p)),
+                                                [precond_pos, precond_neg],
+                                                [effect_add, effect_rem])
+                            loads.append(unload)
+            return loads
 
         def unload_actions():
             '''Create all concrete Unload actions and return a list
