@@ -228,8 +228,8 @@ class AirCargoProblem(Problem):
 
         for clause in self.goal:
             if clause not in kb.clauses:
-                return clause
-        return True
+                count = count + 1
+        return count
 
 
 def air_cargo_p1() -> AirCargoProblem:
