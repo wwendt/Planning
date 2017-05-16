@@ -321,10 +321,10 @@ class PlanningGraph():
                 self.a_levels.append(action)
 
                 for node_s in node_a.prenodes:
-                    node_s.child(node_a)
-                    node_s.parent(node_a)
+                    node_a.add(node_s)
+                    node_s.add(node_a)
 
-        return node_a
+        
 
         
 
