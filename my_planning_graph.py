@@ -312,17 +312,19 @@ class PlanningGraph():
         #   to see if a proposed PgNode_a has prenodes that are a subset of the previous S level.  Once an
         #   action node is added, it MUST be connected to the S node instances in the appropriate s_level set.
 
-        self.a_levels.append(set())
+        #self.a_levels.append(set())
         
         for action in self.all_actions:
             node_a = PgNode_a(action)
 
             if node_a.prenodes.issubset(self.s_levels[level]):
-                self.a_levels.append(action)
+                self.a_levels[level].add(action)
 
                 for node_s in node_a.prenodes:
-                    node_a.add(node_s)
-                    node_s.add(node_a)
+                    for child in node_s.children:
+                        node_s.children[child].add(node_a)
+                    for parent in node_a.parents:
+                        node_a.parents[parent].add(node_s)
 
         
 
