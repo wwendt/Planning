@@ -326,7 +326,7 @@ class PlanningGraph():
                     for parent in node_a.parents:
                         node_a.parents[parent].add(node_s)
 
-        
+        return node_a
 
         
 
@@ -355,7 +355,7 @@ class PlanningGraph():
             self.s_levels[level].add(PgNode_s(literal, True))
         for literal in self.fs.neg:
             self.s_levels[level].add(PgNode_s(literal, False))
-
+        return level
 
     def update_a_mutex(self, nodeset):
         ''' Determine and update sibling mutual exclusion for A-level nodes
