@@ -318,15 +318,17 @@ class PlanningGraph():
             node_a = PgNode_a(action)
 
             if node_a.prenodes.issubset(self.s_levels[level]):
-                self.a_levels[level].add(action)
+               
+                
 
-                for node_s in node_a.prenodes:
-                    for child in node_s.children:
-                        node_s.children[child].add(node_a)
-                    for parent in node_a.parents:
-                        node_a.parents[parent].add(node_s)
-
-        return node_a
+                for node_s in self.s_levels[level]:
+                    
+                        node_s.children.add(node_a)
+                    
+                        node_a.parents.add(node_s)
+                        self.a_levels.append(set())
+                        self.a_levels[level].add(node_a)
+        
 
         
 
@@ -351,11 +353,20 @@ class PlanningGraph():
         level = 1
         self.s_levels.append(set())  # S0 set of s_nodes - empty to start
         # for each fluent in the initial state, add the correct literal PgNode_s
+        """
         for literal in self.fs.pos:
             self.s_levels[level].add(PgNode_s(literal, True))
         for literal in self.fs.neg:
             self.s_levels[level].add(PgNode_s(literal, False))
         return level
+        """
+        for literal in self.a_levels[level-1]:
+            literal_set = literal.effnodes
+
+            for literal in literal_set:
+                self.s_levels[level].add(literal)
+                literal.children.add(literal)
+                literal.parents.add(literal)
 
     def update_a_mutex(self, nodeset):
         ''' Determine and update sibling mutual exclusion for A-level nodes
@@ -431,6 +442,13 @@ class PlanningGraph():
         :return: bool
         '''
         # TODO test for Interference between nodes
+        for eff in node_a1.action.effect_add:
+            if eff in node_a2.action.effect_rem:
+                return True
+        for eff in node_a1.action.effect_rem:
+            if eff in node_a2.action.effect_add:
+                return True
+
         return False
 
     def competing_needs_mutex(self, node_a1: PgNode_a, node_a2: PgNode_a) -> bool:
@@ -445,6 +463,10 @@ class PlanningGraph():
         '''
 
         # TODO test for Competing Needs between nodes
+        for parent1 in node_a1.parents:
+            for parent2 in node_a2.parents:
+                if parent1.is_mutex(parent2):
+                    result = True
         return False
 
     def update_s_mutex(self, nodeset: set):
