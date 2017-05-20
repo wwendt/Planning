@@ -364,10 +364,9 @@ class PlanningGraph():
         for literal_a in self.a_levels[level-1]:
             literal_set = literal_a.effnodes
 
-            self.s_levels[level].add(literal_set)
+            #self.s_levels[level].add(literal_set)           
 
-
-            for literal_s in level_set:
+            for literal_s in literal_set:
                 self.s_levels[level].add(literal_s)
                 literal_a.children.add(literal_s)
                 literal_s.parents.add(literal_a)
