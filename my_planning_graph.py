@@ -530,6 +530,10 @@ class PlanningGraph():
         :return: bool
         '''
         # TODO test for Inconsistent Support between nodes
+        for parent1 in node_s1.parents:
+            for parent2 in node_s2.parents:
+                if parent1.is_mutex(parent2):
+                    return True
         return False
 
     def h_levelsum(self) -> int:
