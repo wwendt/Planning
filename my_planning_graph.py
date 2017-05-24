@@ -351,7 +351,7 @@ class PlanningGraph():
         #   all of the new S nodes as children of all the A nodes that could produce them, and likewise add the A nodes to the
         #   parent sets of the S nodes
         leveled = False
-        level = 1
+        #level = 1
         self.s_levels.append(set())  # S0 set of s_nodes - empty to start
         # for each fluent in the initial state, add the correct literal PgNode_s
         """
@@ -475,7 +475,7 @@ class PlanningGraph():
         for parent1 in node_a1.parents:
             for parent2 in node_a2.parents:
                 if parent1.is_mutex(parent2):
-                    result = True
+                    return True
         return False
 
     def update_s_mutex(self, nodeset: set):
@@ -511,6 +511,8 @@ class PlanningGraph():
         :return: bool
         '''
         # TODO test for negation between nodes
+        
+               
         return False
 
     def inconsistent_support_mutex(self, node_s1: PgNode_s, node_s2: PgNode_s):
@@ -542,8 +544,10 @@ class PlanningGraph():
         :return: int
         '''
         level_sum = 0
+        goals = self.problem.goal
         # TODO implement
         # for each goal in the problem, determine the level cost, then add them together
         g = PlanningGraph(self, node.state)
         level_sum = pg.h_levelsum()
+
         return level_sum
