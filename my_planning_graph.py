@@ -512,7 +512,10 @@ class PlanningGraph():
         :return: bool
         '''
         # TODO test for negation between nodes
-        
+        if node_s1.is_pos and not node_s2.is_pos:
+            return True
+        if node_s2.is_pos and not node_s1.is_pos:
+            return True
                
         return False
 
