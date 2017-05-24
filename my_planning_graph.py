@@ -472,6 +472,7 @@ class PlanningGraph():
         '''
 
         # TODO test for Competing Needs between nodes
+
         for parent1 in node_a1.parents:
             for parent2 in node_a2.parents:
                 if parent1.is_mutex(parent2):
@@ -532,10 +533,13 @@ class PlanningGraph():
         :return: bool
         '''
         # TODO test for Inconsistent Support between nodes
-        for parent1 in node_s1.parents:
-            for parent2 in node_s2.parents:
-                if parent1.is_mutex(parent2):
-                    return True
+
+        for pair in self.all_actions:
+            for parent1 in node_s1.parents:
+                for parent2 in node_s2.parents:
+                    if parent1.is_mutex(parent2):
+                        return True
+                   
         return False
 
     def h_levelsum(self) -> int:
@@ -547,7 +551,10 @@ class PlanningGraph():
         goals = self.problem.goal
         # TODO implement
         # for each goal in the problem, determine the level cost, then add them together
-        g = PlanningGraph(self, node.state)
+       # g = PlanningGraph(self, node.state)
         level_sum = pg.h_levelsum()
+        for goal in self.problem.goal:
+            for level in self.levels:
+                level_sum = level_sum + 1
 
         return level_sum
