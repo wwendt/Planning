@@ -537,12 +537,15 @@ class PlanningGraph():
         '''
         # TODO test for Inconsistent Support between nodes
 
-        for pair in self.all_actions:
-            for parent1 in node_s1.parents:
-                for parent2 in node_s2.parents:
-                    if parent1.is_mutex(parent2):
-                        return True
-                   
+        
+        for parent1 in node_s1.parents:
+            for parent2 in node_s2.parents:
+                #if parent1.is_mutex(parent2) and not parent2.is_mutex(parent1):
+                #    return True
+                #if parent2.is_mutex(parent1) and not parent1.is_mutex(parent2):
+                #    return True
+                if parent1.is_mutex(parent2) and parent2.is_mutex(parent1):
+                    return True           
         return False
 
     def h_levelsum(self) -> int:
