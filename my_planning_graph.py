@@ -540,12 +540,11 @@ class PlanningGraph():
         
         for parent1 in node_s1.parents:
             for parent2 in node_s2.parents:
-                #if parent1.is_mutex(parent2) and not parent2.is_mutex(parent1):
-                #    return True
-                #if parent2.is_mutex(parent1) and not parent1.is_mutex(parent2):
-                #    return True
-                if parent1.is_mutex(parent2) and parent2.is_mutex(parent1):
-                    return True           
+                if parent1.is_mutex(parent2):
+                    return True
+                if parent1 and parent2:
+                    return False
+                          
         return False
 
     def h_levelsum(self) -> int:
@@ -554,13 +553,13 @@ class PlanningGraph():
         :return: int
         '''
         level_sum = 0
-        goals = self.problem.goal
+        #goals = self.problem.goal
         # TODO implement
         # for each goal in the problem, determine the level cost, then add them together
        # g = PlanningGraph(self, node.state)
-        level_sum = pg.h_levelsum()
         for goal in self.problem.goal:
-            for level in self.levels:
-                level_sum = level_sum + 1
+            for level in self.s_levels:
+                if goal in level:           
+                    level_sum = level_sum + goal
 
         return level_sum
