@@ -559,7 +559,7 @@ class PlanningGraph():
        # g = PlanningGraph(self, node.state)
         for goal in self.problem.goal:
             for level in self.s_levels:
-                if goal in level:           
-                    level_sum = level_sum + goal
+                if goal in literal:           
+                    level_sum = level_sum + self.s_levels
 
         return level_sum
