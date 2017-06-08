@@ -73,7 +73,7 @@ class AirCargoProblem(Problem):
                         for to in self.airports:
                             precond_pos = [expr("At({}, {})".format(c, to)), expr("At({}, {})".format(p, to))]
                             precond_neg = []
-                            effect_add = [expr("At({}, {})".format(c, to))]
+                            effect_add = [expr("At({}, {})".format(c, p))]
                             effect_rem = [expr("At({}, {})".format(c, to))]
                             load = Action(expr("In({}, {}, {})".format(c, p, to)),
                                                 [precond_pos, precond_neg],
@@ -145,14 +145,18 @@ class AirCargoProblem(Problem):
 
         kb = PropKB()
         kb.tell(decode_state(state, self.state_map).pos_sentence())
+
+        d = decode_state(state, self.state_map)
         for action in self.actions_list:
             is_possible = True
             for clause in action.precond_pos:
                 if clause not in kb.clauses:
-                    is_possible = False
+                    if clause not in d.pos:  
+                        is_possible = False
             for clause in action.precond_neg:
                 if clause in kb.clauses:
-                    is_possible = False
+                    if clause in d.neg:
+                        is_possible = False
             if is_possible:
                 possible_actions.append(action)
         
