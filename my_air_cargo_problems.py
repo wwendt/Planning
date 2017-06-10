@@ -143,20 +143,20 @@ class AirCargoProblem(Problem):
         # TODO implement
         possible_actions = []
 
-        kb = PropKB()
-        kb.tell(decode_state(state, self.state_map).pos_sentence())
+        #kb = PropKB()
+        #kb.tell(decode_state(state, self.state_map).pos_sentence())
 
         d = decode_state(state, self.state_map)
         for action in self.actions_list:
             is_possible = True
             for clause in action.precond_pos:
-                if clause not in kb.clauses:
-                    if clause not in d.pos:  
-                        is_possible = False
+                #if clause not in kb.clauses:
+                if clause not in d.pos:  
+                    is_possible = False
             for clause in action.precond_neg:
-                if clause in kb.clauses:
-                    if clause in d.neg:
-                        is_possible = False
+                #if clause in kb.clauses:
+                if clause in d.neg:
+                    is_possible = False
             if is_possible:
                 possible_actions.append(action)
         
