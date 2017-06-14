@@ -67,18 +67,17 @@ class AirCargoProblem(Problem):
             
             
             """
-            for c in self.cargos:
-                for p in self.planes:
-                    if c != p:
-                        for to in self.airports:
-                            precond_pos = [expr("At({}, {})".format(c, to)), expr("At({}, {})".format(p, to))]
-                            precond_neg = []
-                            effect_add = [expr("At({}, {})".format(c, p))]
-                            effect_rem = [expr("At({}, {})".format(c, to))]
-                            load = Action(expr("In({}, {}, {})".format(c, p, to)),
+            for p in self.planes:
+                for c in self.cargos:
+                    for to in self.airports:
+                        precond_pos = [expr("At({}, {})".format(c, to)), expr("At({}, {})".format(p, to))]
+                        precond_neg = []
+                        effect_add = [expr("In({}, {})".format(c, p))]
+                        effect_rem = [expr("At({}, {})".format(c, to))]
+                        load = Action(expr("Load({}, {}, {})".format(c, p, to)),
                                                 [precond_pos, precond_neg],
                                                 [effect_add, effect_rem])
-                            loads.append(load)
+                        loads.append(load)
             return loads
 
         def unload_actions():
@@ -94,18 +93,17 @@ class AirCargoProblem(Problem):
                 effect_add: At(C1, SFO) and not In(C1, P1)
                 )
             """
-            for c in self.cargos:
-                for p in self.planes:
-                    if c != p:
-                        for fr in self.airports:
-                            precond_pos = [expr("In({}, {})".format(c, p)), expr("At({}, {})".format(p, fr))]
-                            precond_neg = []
-                            effect_add = [expr("At({}, {})".format(c, fr))]
-                            effect_rem = [expr("At({}, {})".format(c, p))]
-                            unload = Action(expr("In({}, {}, {})".format(c, p, fr)),
+            for p in self.planes:
+                for c in self.cargos:
+                    for fr in self.airports:
+                        precond_pos = [expr("In({}, {})".format(c, p)), expr("At({}, {})".format(p, fr))]
+                        precond_neg = []
+                        effect_add = [expr("At({}, {})".format(c, fr))]
+                        effect_rem = [expr("In({}, {})".format(c, p))]
+                        unload = Action(expr("Unload({}, {}, {})".format(c, p, fr)),
                                             [precond_pos, precond_neg],
                                             [effect_add, effect_rem])
-                            unloads.append(unload)
+                        unloads.append(unload)
 
             return unloads
 
