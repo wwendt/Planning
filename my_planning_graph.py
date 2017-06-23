@@ -540,11 +540,9 @@ class PlanningGraph():
         
         for parent1 in node_s1.parents:
             for parent2 in node_s2.parents:
-                if parent1.is_mutex(parent2) and node_s2 not in parent1.children and node_s1 not in parent2.children:
-                    return True
-                          
-                else:
-                    return False
+                if not (parent1.is_mutex(parent2) or parent2.is_mutex(parent1)) and node_s2 not in parent1.children and node_s1 not in parent2.children:
+                    return False         
+        return True
 
     def h_levelsum(self) -> int:
         '''The sum of the level costs of the individual goals (admissible if goals independent)
