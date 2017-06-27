@@ -540,7 +540,7 @@ class PlanningGraph():
         
         for parent1 in node_s1.parents:
             for parent2 in node_s2.parents:
-                if not (parent1.is_mutex(parent2) or parent2.is_mutex(parent1)) and node_s2 not in parent1.children and node_s1 not in parent2.children:
+                if not (parent1.is_mutex(parent2) or parent2.is_mutex(parent1)):
                     return False         
         return True
 
